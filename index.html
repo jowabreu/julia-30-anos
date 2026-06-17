@@ -23,13 +23,8 @@
   html { scroll-behavior: smooth; }
 
   body {
-    /* --- INÍCIO DO FUNDO COM IMAGEM --- */
-    background-image: url('fundo.webp'); /* Coloque aqui o nome exato da imagem que você salvou */
-    background-size: cover; /* Faz a imagem cobrir toda a tela */
-    background-position: center center; /* Centraliza as flores */
-    background-attachment: fixed; /* O fundo fica parado enquanto o site rola para baixo */
-    background-repeat: no-repeat; /* Evita que a imagem se repita como um azulejo */
-    /* --- FIM DO FUNDO COM IMAGEM --- */
+    /* Essa linha junta cor, imagem, posição e forçamento num lugar só */
+    background: var(--bg) url('fundo-flores.png') center center / cover no-repeat fixed !important;
     font-family: var(--font-ui);
     min-height: 100vh;
     display: flex;

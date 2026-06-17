@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aniversário de Júlia – 30 Anos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --card-bg: #f6ede4;
+    --panel-bg: rgba(255,252,252,0.97);
+    --circle-bg: #f5efe8;
+    --wine: #5c1f35;
+    --wine-light: #7a3a50;
+    --green: #6a8c4a;
+    --font-display: 'Cormorant Garamond', serif;
+    --font-ui: 'Josefin Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  /* ── CAMADA DE FUNDO (corrige o bug do fundo desaparecendo) ──
+     Antes o fundo estava em "background: var(--bg) ... fixed" no body:
+     a variável --bg não existia (causava erro silencioso) e o
+     "background-attachment: fixed" no body é o que faz a imagem
+     "sumir" no Safari/iOS depois de carregar. Usar uma camada fixa
+     separada resolve os dois problemas e funciona em qualquer dispositivo. */
+  .bg-layer {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: #f6ede4 url('fundo-flores.png') center center / cover no-repeat;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+  }
+
+  body {
+    font-family: var(--font-ui);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: clamp(1rem, 4vw, 3rem) clamp(0.75rem, 3vw, 2rem);
+    gap: clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  /* ── MENU DE NAVEGAÇÃO ── */
+  .main-nav {
+    width: min(520px, 100%);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: clamp(0.6rem, 3.5vw, 1.8rem);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(246,237,228,0.93);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    padding: 0.65rem 0.5rem;
+    border-radius: 4px;
+    box-shadow: 0 1px 8px rgba(92,31,53,0.06);
+  }
+
+  .nav-btn {
+    font-family: var(--font-ui);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: clamp(8.5px, 2.3vw, 11px);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--wine-light);
+    padding: 0.3rem 0.1rem;
+    position: relative;
+    transition: color 0.2s;
+    white-space: nowrap;
+  }
+
+  .nav-btn::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: -4px;
+    height: 2px;
+    background: var(--green);
+    transform: scaleX(0);
+    transition: transform 0.25s;
+  }
+
+  .nav-btn.active { color: var(--wine); }
+  .nav-btn.active::after { transform: scaleX(1); }
+
+  /* ── CONTROLE DE VISUALIZAÇÃO DAS SEÇÕES ── */
+  .view-section { display: none; }
+  .view-section.view-active { display: block; }
+
+  /* ── INVITE CARD ── */
+  .invite-card {
+    width: min(520px, 100%);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(92,31,53,0.10);
+  }
+
+  /* ── MAP ── */
+  .map-section {
+    width: min(520px, 100%);
+  }
+
+  .section-title {
+    font-family: var(--font-ui);
+    font-size: clamp(9px, 2.2vw, 11px);
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: var(--wine-light);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .map-container {
+    width: 100%;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(92,31,53,0.08);
+    background: #e8e0e0;
+    height: clamp(180px, 40vw, 260px);
+  }
+
+  .map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  /* ── RSVP FORM ── */
+  .rsvp-section {
+    width: min(520px, 100%);
+    background: var(--card-bg);
+    border-radius: 6px;
+    padding: clamp(1.5rem, 5vw, 2.5rem) clamp(1.2rem, 4vw, 2rem);
+    box-shadow: 0 2px 16px rgba(92,31,53,0.06);
+  }
+
+  .rsvp-section .section-title {
+    margin-bottom: 0.4rem;
+  }
+
+  .rsvp-subtitle {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(12px, 3vw, 15px);
+    color: var(--wine-light);
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-group label {
+    font-family: var(--font-ui);
+    font-size: clamp(8.5px, 2vw, 10px);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--wine-light);
+    text-transform: uppercase;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    font-family: var(--font-display);
+    font-size: clamp(13px, 3.2vw, 15px);
+    color: var(--wine);
+    background: #fff;
+    border: 1px solid #e0d0d4;
+    border-radius: 3px;
+    padding: 0.65rem 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: #c9a0b0;
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 90px;
+    font-style: italic;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 400px) {
+    .form-row { grid-template-columns: 1fr; }
+  }
+
+  .btn-send {
+    width: 100%;
+    padding: clamp(0.7rem, 2vw, 0.9rem);
+    background: var(--wine);
+    color: #fff6f6;
+    font-family: var(--font-ui);
+    font-size: clamp(9px, 2.2vw, 11px);
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: background 0.2s, opacity 0.2s;
+  }
+
+  .btn-send:hover { background: #7a2a45; }
+  .btn-send:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .form-msg {
+    text-align: center;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(12px, 3vw, 14px);
+    color: var(--green);
+    margin-top: 0.75rem;
+    min-height: 1.5em;
+  }
+
+  /* ── CARDÁPIO ── */
+  .menu-section {
+    width: min(520px, 100%);
+    background: var(--card-bg);
+    border-radius: 6px;
+    padding: clamp(1.5rem, 5vw, 2.5rem) clamp(1.2rem, 4vw, 2rem);
+    box-shadow: 0 2px 16px rgba(92,31,53,0.06);
+    text-align: center;
+  }
+
+  .menu-category {
+    margin-bottom: 1.3rem;
+  }
+
+  .menu-category:last-child { margin-bottom: 0; }
+
+  .menu-category-label {
+    font-family: var(--font-ui);
+    font-size: clamp(8px, 2.1vw, 10.5px);
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .menu-items {
+    font-family: var(--font-display);
+    font-size: clamp(13px, 3.1vw, 15.5px);
+    font-style: italic;
+    color: var(--wine);
+    line-height: 1.7;
+    letter-spacing: 0.01em;
+  }
+
+  .menu-divider {
+    width: 40px;
+    height: 1px;
+    background: #d8c4c8;
+    margin: 1.1rem auto 0;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    font-family: var(--font-ui);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: #c0aab0;
+    text-transform: uppercase;
+    text-align: center;
+    padding-bottom: 0.5rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-layer" aria-hidden="true"></div>
+
+<!-- ═══════════ MENU DE NAVEGAÇÃO ═══════════ -->
+<nav class="main-nav">
+  <button type="button" class="nav-btn active" data-target="view-inicio">Início</button>
+  <button type="button" class="nav-btn" data-target="view-chegar">Como Chegar</button>
+  <button type="button" class="nav-btn" data-target="view-confirmacao">Confirmação</button>
+  <button type="button" class="nav-btn" data-target="view-cardapio">Cardápio</button>
+</nav>
+
+<!-- ═══════════ INVITE CARD ═══════════ -->
+<div class="invite-card view-section view-active" id="view-inicio">
+  <img src="convite.png" alt="Convite Aniversário Júlia" style="width:100%; display:block; border-radius:6px;">
+</div>
+
+<!-- ═══════════ MAPA ═══════════ -->
+<div class="map-section view-section" id="view-chegar">
+  <p class="section-title">Como Chegar</p>
+  <div class="map-container">
+    <iframe
+      loading="lazy"
+      allowfullscreen
+      referrerpolicy="no-referrer-when-downgrade"
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3674.533057494728!2d-46.991611324689!3d-22.930587579238427!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c8cf005be71d9f%3A0x52d4d9bfb4c0d7a4!2sCh%C3%A1cara%20Reserva%20dos%20Sonhos!5e0!3m2!1spt-BR!2sbr!4v1781654875701!5m2!1spt-BR!2sbr">
+    </iframe>
+  </div>
+</div>
+
+<!-- ═══════════ FORMULÁRIO RSVP ═══════════ -->
+<form class="rsvp-section view-section" id="view-confirmacao">
+
+  <input type="hidden" name="access_key" value="3a82b4ee-be15-44a7-8eef-6cffc9b2fc6e">
+
+  <p class="section-title">Confirmar Presença</p>
+  <p class="rsvp-subtitle">Confirme até o dia 30 de junho</p>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="nome">Nome completo</label>
+      <input type="text" id="nome" name="Nome" placeholder="Seu nome" autocomplete="name" required>
+    </div>
+    <div class="form-group">
+      <label for="telefone">WhatsApp / Telefone</label>
+      <input type="tel" id="telefone" name="Telefone" placeholder="(00) 00000-0000" autocomplete="tel" required>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="mensagem">Mensagem para a aniversariante</label>
+    <textarea id="mensagem" name="Mensagem" placeholder="Deixe um recado carinhoso para a Júlia…"></textarea>
+  </div>
+
+  <button type="submit" class="btn-send">Enviar Confirmação</button>
+  <p class="form-msg" id="form-msg"></p>
+</form>
+
+<!-- ═══════════ CARDÁPIO ═══════════ -->
+<div class="menu-section view-section" id="view-cardapio">
+  <p class="section-title">Cardápio</p>
+  <p class="rsvp-subtitle">Sabores selecionados para celebrar esse dia especial</p>
+
+  <div class="menu-category">
+    <p class="menu-category-label">Proteínas / Churrasco</p>
+    <p class="menu-items">Picanha premium · Costela bovina defumada · Linguiça toscana · Panceta · Filé de coxa · Queijo coalho · Pão de alho</p>
+  </div>
+
+  <div class="menu-divider"></div>
+
+  <div class="menu-category">
+    <p class="menu-category-label">Guarnições</p>
+    <p class="menu-items">Arroz branco · Arroz temperado · Ovos de codorna · Batata frita · Farofa caseira · Maionese de legumes</p>
+  </div>
+
+  <div class="menu-divider"></div>
+
+  <div class="menu-category">
+    <p class="menu-category-label">Saladas</p>
+    <p class="menu-items">Vinagrete · Caponata de berinjela e abobrinha · Salada tropical (palmito, tomate cereja, champignon, rúcula, alface, manga e cebola roxa)</p>
+  </div>
+
+  <div class="menu-divider"></div>
+
+  <div class="menu-category">
+    <p class="menu-category-label">Bebidas</p>
+    <p class="menu-items">Chopp Pilsen (Cervejaria Hebling) · Suco de laranja · Coca-Cola (Original e Zero) · Guaraná Antarctica (Original e Zero) · Água aromatizada · Água mineral 500ml · Água com gás 500ml</p>
+  </div>
+</div>
+
+<footer>Aniversário de Júlia · 09 de Julho · Valinhos</footer>
+
+<script>
+// ── NAVEGAÇÃO ENTRE SEÇÕES ──
+const navButtons = document.querySelectorAll('.nav-btn');
+const viewSections = document.querySelectorAll('.view-section');
+
+navButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    navButtons.forEach(b => b.classList.remove('active'));
+    viewSections.forEach(v => v.classList.remove('view-active'));
+
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.target).classList.add('view-active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+// ── ENVIO DO FORMULÁRIO (RSVP) ──
+const form = document.getElementById('view-confirmacao');
+const submitBtn = form.querySelector('button[type="submit"]');
+const feedback = document.getElementById('form-msg');
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+
+    formData.append("subject", "Confirmação de Presença – Aniversário da Júlia 30 Anos");
+    formData.append("redirect", "");
+
+    const originalText = submitBtn.textContent;
+
+    submitBtn.textContent = "Enviando...";
+    submitBtn.disabled = true;
+    feedback.style.color = '#6a8c4a';
+    feedback.textContent = "Enviando sua confirmação... 🌸";
+
+    try {
+        const response = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            feedback.style.color = '#6a8c4a';
+            feedback.textContent = "Presença confirmada com sucesso! Obrigado! 🌸";
+            alert("Presença confirmada com sucesso! Obrigado! 🌸");
+            form.reset();
+        } else {
+            feedback.style.color = '#a03050';
+            feedback.textContent = "Erro ao enviar: " + data.message;
+            alert("Erro ao enviar: " + data.message);
+        }
+
+    } catch (error) {
+        feedback.style.color = '#a03050';
+        feedback.textContent = "Ops! Algo deu errado. Por favor, tente novamente.";
+        alert("Ops! Algo deu errado. Por favor, tente novamente.");
+    } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+    }
+});
+</script>
+
+</body>
+</html>

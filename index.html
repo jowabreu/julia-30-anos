@@ -24,7 +24,14 @@
   html { scroll-behavior: smooth; }
 
   body {
-    background: var(--bg);
+    /* --- INÍCIO DO FUNDO COM IMAGEM --- */
+    background-color: var(--bg); /* Mantém a sua cor original caso a imagem demore a carregar */
+    background-image: url('fundo.png'); /* Coloque aqui o nome exato da imagem que você salvou */
+    background-size: cover; /* Faz a imagem cobrir toda a tela */
+    background-position: center center; /* Centraliza as flores */
+    background-attachment: fixed; /* O fundo fica parado enquanto o site rola para baixo */
+    background-repeat: no-repeat; /* Evita que a imagem se repita como um azulejo */
+    /* --- FIM DO FUNDO COM IMAGEM --- */
     font-family: var(--font-ui);
     min-height: 100vh;
     display: flex;

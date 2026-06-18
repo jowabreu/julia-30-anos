@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aniversário de Júlia – 30 Anos</title>
+<link rel="icon" href="icone.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="bg-layer" aria-hidden="true"></div>
+
+<!-- ═══════════ MENU DE NAVEGAÇÃO ═══════════ -->
+<nav class="main-nav">
+  <button type="button" class="nav-btn active" data-target="view-inicio">Início</button>
+  <button type="button" class="nav-btn" data-target="view-chegar">Como Chegar</button>
+  <button type="button" class="nav-btn" data-target="view-confirmacao">Confirmação</button>
+  <button type="button" class="nav-btn" data-target="view-cardapio">Cardápio</button>
+</nav>
+
+<!-- ═══════════ INVITE CARD ═══════════ -->
+<div class="invite-card view-section view-active" id="view-inicio">
+  <img src="convite.png" alt="Convite Aniversário Júlia" style="width:100%; display:block; border-radius:6px;">
+</div>
+
+<!-- ═══════════ MAPA ═══════════ -->
+<div class="map-section view-section" id="view-chegar">
+  <p class="section-title">Como Chegar</p>
+  <div class="map-container">
+    <iframe
+      loading="lazy"
+      allowfullscreen
+      referrerpolicy="no-referrer-when-downgrade"
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3674.533057494728!2d-46.991611324689!3d-22.930587579238427!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c8cf005be71d9f%3A0x52d4d9bfb4c0d7a4!2sCh%C3%A1cara%20Reserva%20dos%20Sonhos!5e0!3m2!1spt-BR!2sbr!4v1781654875701!5m2!1spt-BR!2sbr">
+    </iframe>
+  </div>
+</div>
+
+<!-- ═══════════ FORMULÁRIO RSVP ═══════════ -->
+<form class="rsvp-section view-section" id="view-confirmacao">
+
+  <input type="hidden" name="access_key" value="3a82b4ee-be15-44a7-8eef-6cffc9b2fc6e">
+
+  <p class="section-title">Confirmar Presença</p>
+  <p class="rsvp-subtitle">Confirme até o dia 30 de junho</p>
+
+  <div class="form-group">
+    <label for="nome">Nome completo</label>
+    <input type="text" id="nome" name="Nome" placeholder="Seu nome" autocomplete="name" required>
+  </div>
+
+  <div class="form-group">
+    <label for="mensagem">Mensagem para a aniversariante</label>
+    <textarea id="mensagem" name="Mensagem" placeholder="Deixe um recado carinhoso para a Júlia…"></textarea>
+  </div>
+
+  <button type="submit" class="btn-send">Enviar Confirmação</button>
+  <p class="form-msg" id="form-msg"></p>
+</form>
+
+<!-- ═══════════ CARDÁPIO ═══════════ -->
+<div class="menu-section view-section" id="view-cardapio">
+  <p class="section-title">Cardápio</p>
+  <p class="rsvp-subtitle">Sabores selecionados para celebrar esse dia especial</p>
+
+  <div class="menu-category">
+    <p class="menu-category-label">Proteínas / Churrasco</p>
+    <p class="menu-items">Picanha premium · Fraldinha red premium · Costela bovina defumada · Linguiça toscana · Panceta · Filé de coxa · Queijo coalho · Pão de alho</p>
+  </div>
+
+
+  <div class="menu-category">
+    <p class="menu-category-label">Guarnições</p>
+    <p class="menu-items">Arroz branco · Arroz temperado · Ovos de codorna · Batata frita · Farofa caseira · Maionese de legumes</p>
+  </div>
+ 
+
+  <div class="menu-category">
+    <p class="menu-category-label">Saladas</p>
+    <p class="menu-items">Vinagrete · Caponata de berinjela e abobrinha · Salada tropical (palmito, tomate cereja, champignon, rúcula, alface, manga e cebola roxa)</p>
+  </div>
+ 
+
+  <div class="menu-category">
+    <p class="menu-category-label">Bebidas</p>
+    <p class="menu-items">Chopp · Suco de laranja · Coca-Cola (Original e Zero) · Guaraná Antarctica (Original e Zero) · Água mineral  · Água com gás </p>
+  </div>
+ 
+
+ <div class="menu-category">
+    <p class="menu-category-label">Sobremesa</p>
+    <p class="menu-items">Bolo e Doces </p>
+  </div>
+</div>
+
+<footer>Aniversário de Júlia · 09 de Julho · Valinhos</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
